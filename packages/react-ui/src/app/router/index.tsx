@@ -65,6 +65,7 @@ import { ApTableEditorPage } from '../routes/tables/id';
 import { ShareTemplatePage } from '../routes/templates/share-template';
 import { TodosPage } from '../routes/todos';
 import { TodoTestingPage } from '../routes/todos/id';
+import { DollBuilderPage } from '../routes/doll-builder';
 
 import { AfterImportFlowRedirect } from './after-import-flow-redirect';
 import { DefaultRoute } from './default-route';
@@ -270,6 +271,16 @@ const routes = [
       <PageTitle title="Todo Testing">
         <TodoTestingPage />
       </PageTitle>
+    ),
+  }),
+  ...ProjectRouterWrapper({
+    path: '/doll-builder',
+    element: (
+      <ProjectDashboardLayout>
+        <PageTitle title="Doll Builder">
+          <DollBuilderPage />
+        </PageTitle>
+      </ProjectDashboardLayout>
     ),
   }),
   ...ProjectRouterWrapper({

@@ -6,6 +6,7 @@ import {
   MoreHorizontal,
   Package,
   Puzzle,
+  Sparkles,
   Table2,
   Workflow,
 } from 'lucide-react';
@@ -106,7 +107,17 @@ export function ProjectDashboardSidebar() {
     isSubItem: false,
   };
 
-  const items = [flowsLink, tablesLink, todosLink, releasesLink].filter(
+  const dollBuilderLink: SidebarItemType = {
+    type: 'link',
+    to: authenticationSession.appendProjectRoutePrefix('/doll-builder'),
+    label: t('Doll Builder'),
+    show: true,
+    icon: Sparkles,
+    hasPermission: true,
+    isSubItem: false,
+  };
+
+  const items = [flowsLink, tablesLink, todosLink, releasesLink, dollBuilderLink].filter(
     permissionFilter,
   );
 
