@@ -34,6 +34,10 @@ export const dollIngredientsApi = {
     async delete(id: string) {
         return api.delete<void>(`/v1/doll-ingredients/${id}`)
     },
+
+    async syncFromNotion() {
+        return api.post<{ results: Array<{ category: string; upserted: number; deleted: number; error?: string }> }>('/v1/doll-ingredients/sync', {})
+    },
 }
 
 export const dollConfigurationsApi = {

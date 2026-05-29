@@ -43,6 +43,16 @@ export const dollIngredientsHooks = {
             },
         })
     },
+
+    useSyncFromNotion() {
+        const queryClient = useQueryClient()
+        return useMutation({
+            mutationFn: dollIngredientsApi.syncFromNotion,
+            onSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: [INGREDIENTS_KEY] })
+            },
+        })
+    },
 }
 
 export const dollConfigurationsHooks = {

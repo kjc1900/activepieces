@@ -11,6 +11,7 @@ export enum SystemJobName {
     AI_USAGE_REPORT = 'ai-usage-report',
     SEVEN_DAYS_IN_TRIAL = 'seven-days-in-trial',
     ONE_DAY_LEFT_ON_TRIAL = 'one-day-left-on-trial',
+    NOTION_INGREDIENT_SYNC = 'notion-ingredient-sync',
 }
 
 type IssuesReminderSystemJobData = {
@@ -47,6 +48,7 @@ type SystemJobDataMap = {
     [SystemJobName.RUN_TELEMETRY]: Record<string, never>
     [SystemJobName.SEVEN_DAYS_IN_TRIAL]: SevenDaysInTrialEmailSystemJobData
     [SystemJobName.ONE_DAY_LEFT_ON_TRIAL]: OneDayLeftOnTrialEmailSystemJobData
+    [SystemJobName.NOTION_INGREDIENT_SYNC]: Record<string, never>
 }
 
 export type SystemJobData<T extends SystemJobName = SystemJobName> = T extends SystemJobName ? SystemJobDataMap[T] : never

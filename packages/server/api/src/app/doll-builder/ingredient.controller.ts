@@ -1,6 +1,7 @@
-import { CreateDollIngredientRequest, DollIngredientCategory, ListDollIngredientsRequest, PrincipalType, UpdateDollIngredientRequest } from '@activepieces/shared'
+import { CreateDollIngredientRequest, DollIngredientCategory, PrincipalType, UpdateDollIngredientRequest } from '@activepieces/shared'
 import { FastifyPluginAsyncTypebox, Type } from '@fastify/type-provider-typebox'
 import { ingredientService } from './ingredient.service'
+import { notionSyncService } from './notion-sync.service'
 
 const DEFAULT_LIMIT = 50
 const DEFAULT_CURSOR = null
@@ -33,6 +34,11 @@ export const ingredientController: FastifyPluginAsyncTypebox = async (app) => {
     app.delete('/:id', DeleteIngredientRequest, async (request) => {
         await ingredientService.delete(request.params.id)
         return {}
+    })
+
+    app.post('/sync', SyncFromNotionRequest, async (request) => {
+        const results = await notionSyncService.syncAll(request.log)
+        return { results }
     })
 }
 
@@ -94,6 +100,13 @@ const DeleteIngredientRequest = {
     schema: {
         params: Type.Object({ id: Type.String() }),
     },
+    config: {
+        allowedPrincipals: [PrincipalType.USER, PrincipalType.SERVICE],
+    },
+}
+
+const SyncFromNotionRequest = {
+    schema: {},
     config: {
         allowedPrincipals: [PrincipalType.USER, PrincipalType.SERVICE],
     },

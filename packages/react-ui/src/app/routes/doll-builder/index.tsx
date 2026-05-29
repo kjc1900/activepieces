@@ -5,13 +5,14 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { useToast } from '@/components/ui/use-toast'
 import { DollBuilderWizard } from '@/features/doll-builder/components/doll-builder-wizard'
 import { DollConfigCard } from '@/features/doll-builder/components/doll-config-card'
-import { dollConfigurationsHooks } from '@/features/doll-builder/lib/doll-builder-hooks'
-import { Plus, Sparkles } from 'lucide-react'
+import { dollConfigurationsHooks, dollIngredientsHooks } from '@/features/doll-builder/lib/doll-builder-hooks'
+import { Plus, RefreshCw, Sparkles } from 'lucide-react'
 import { useState } from 'react'
 
 export function DollBuilderPage() {
     const { data, isLoading } = dollConfigurationsHooks.useList()
     const deleteMutation = dollConfigurationsHooks.useDelete()
+    const syncMutation = dollIngredientsHooks.useSyncFromNotion()
     const { toast } = useToast()
 
     const [builderOpen, setBuilderOpen] = useState(false)
@@ -27,6 +28,18 @@ export function DollBuilderPage() {
     function openEdit(config: PopulatedDollConfiguration) {
         setEditing(config)
         setBuilderOpen(true)
+    }
+
+    async function handleSync() {
+        const result = await syncMutation.mutateAsync()
+        const totals = result.results.reduce((acc, r) => ({ upserted: acc.upserted + r.upserted, deleted: acc.deleted + r.deleted }), { upserted: 0, deleted: 0 })
+        const errors = result.results.filter((r) => r.error)
+        if (errors.length > 0) {
+            toast({ title: 'Sync completed with errors', description: errors.map((e) => `${e.category}: ${e.error}`).join('\n'), variant: 'destructive' })
+        }
+        else {
+            toast({ title: 'Synced from Notion', description: `${totals.upserted} updated · ${totals.deleted} removed` })
+        }
     }
 
     async function handleDelete(id: string) {
@@ -55,10 +68,16 @@ export function DollBuilderPage() {
                         Build your doll recipe — stones, herbs, colors, archetypes, and the intention that holds it all together.
                     </p>
                 </div>
-                <Button onClick={openNew} className="gap-2">
-                    <Plus className="w-4 h-4" />
-                    New Recipe
-                </Button>
+                <div className="flex gap-2">
+                    <Button variant="outline" size="sm" onClick={handleSync} disabled={syncMutation.isPending} className="gap-1.5">
+                        <RefreshCw className={`w-3.5 h-3.5 ${syncMutation.isPending ? 'animate-spin' : ''}`} />
+                        {syncMutation.isPending ? 'Syncing…' : 'Sync from Notion'}
+                    </Button>
+                    <Button onClick={openNew} className="gap-2">
+                        <Plus className="w-4 h-4" />
+                        New Recipe
+                    </Button>
+                </div>
             </div>
 
             {isLoading && (
