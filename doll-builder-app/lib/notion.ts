@@ -3,10 +3,10 @@ import { IngredientCategory } from '@/types'
 const NOTION_VERSION = '2022-06-28'
 
 const DB_IDS: Record<IngredientCategory, string> = {
-  ROCK: '2545a871-3df2-817f-a006-000b68789d0e',
-  HERB_OIL: '2515a871-3df2-813b-856e-000be51afa7d',
-  COLOR: '2525a871-3df2-80a3-9973-000b3de8301a',
-  ARCHETYPE: '2515a871-3df2-8052-8b00-000b0dee85e6',
+  ROCK:      '2545a871-3df2-8089-9c7c-e39034b2fb96',
+  HERB_OIL:  '2515a871-3df2-8030-bb1f-e626f4115f97',
+  COLOR:     '2525a871-3df2-80b8-84eb-fce643d14eb3',
+  ARCHETYPE: '2515a871-3df2-802e-87cb-d4efbe7eb685',
 }
 
 interface NotionPage {
