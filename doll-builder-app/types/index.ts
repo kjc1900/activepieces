@@ -39,7 +39,7 @@ export interface Ingredient {
   category: IngredientCategory
   name: string
   description: string | null
-  extra_data: Record<string, unknown>
+  extra_data: Record<string, any>
   created_at: string
   updated_at: string
 }
